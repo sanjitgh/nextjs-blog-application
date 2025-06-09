@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // This is use for register validation only
-export const RegisterFromSchema = z
+export const RegisterFormSchema = z
   .object({
     email: z.string().email({ message: "Please enter a valid email." }).trim(),
     password: z
@@ -33,7 +33,17 @@ export const RegisterFromSchema = z
   });
 
 // Thsi is use for login validation only
-export const LoginFromSchema = z.object({
+export const LoginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }).trim(),
   password: z.string().min(1, { message: "Password is required." }).trim(),
+});
+
+// Thsi is use for create blog validation only
+export const BlogFormSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "Title is required" })
+    .max(100, { message: "Title length will be maximum 100 charecter" })
+    .trim(),
+  content: z.string().min(1, { message: "Content is required" }).trim(),
 });

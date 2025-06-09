@@ -1,15 +1,16 @@
 "use server";
 
 import { getCollection } from "@/lib/db";
-import { LoginFromSchema, RegisterFromSchema } from "@/lib/rulse";
 import { createSession } from "@/lib/sessions";
 import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
+import { cookies } from "next/headers";
+import { LoginFormSchema, RegisterFormSchema } from "@/lib/rulse";
 
 // Register function
 export async function register(state, formData) {
   // Validate form field
-  const validatedFields = RegisterFromSchema.safeParse({
+  const validatedFields = RegisterFormSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
     confirmPassword: formData.get("confirmPassword"),
@@ -52,13 +53,13 @@ export async function register(state, formData) {
   await createSession(results.insertedId.toString());
 
   // Redirect
-  redirect("/dashboard");
+  redirect("/");
 }
 
 // Login function
 export async function login(state, formData) {
   // Validate form field
-  const validatedFields = LoginFromSchema.safeParse({
+  const validatedFields = LoginFormSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
   });
@@ -73,7 +74,7 @@ export async function login(state, formData) {
 
   // Extract from field
   const { email, password } = validatedFields.data;
-  console.log(email, password);
+
   // Check if email is exist in our DB?
   const userCollection = await getCollection("users");
   if (!userCollection) return { errors: { email: "Server error!" } };
@@ -84,12 +85,18 @@ export async function login(state, formData) {
   // Check hash password is match
   const matchedPassword = await bcrypt.compare(password, existingUser.password);
 
-  console.log(matchedPassword);
   if (!matchedPassword) return { errors: { password: "Invalid Password" } };
 
   // Create session
   await createSession(existingUser._id.toString());
 
   // Rederect
-  redirect("/dashboard");
+  redirect("/");
+}
+
+// Logout function
+export async function logout() {
+  const cookieStore = await cookies();
+  cookieStore.delete("session");
+  redirect("/login");
 }
