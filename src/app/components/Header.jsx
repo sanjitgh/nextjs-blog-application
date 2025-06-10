@@ -20,6 +20,7 @@ export default async function Header() {
             <Navlink label={"Posts"} href={"/posts"} />
             {authUser ? (
               <>
+                <Navlink label={"Dashboard"} href={"/dashboard"} />
                 <Navlink label={"Create Blog"} href={"/posts/create"} />
                 <form action={logout}>
                   <button className='bg-[#4d6bfe] hover:bg-[#3a5bed] rounded py-1.5 px-4 text-white cursor-pointer'>

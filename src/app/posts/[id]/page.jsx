@@ -13,9 +13,12 @@ export default async function PostDetails({ params }) {
 
   return (
     <div className='py-14'>
-      <div className='max-w-7xl mx-auto min-h-[650px]'>
+      <div className='max-w-7xl mx-auto min-h-[650px] shadow p-5'>
         {singlePost ? (
           <>
+            <p className='text-end'>
+              {singlePost._id.getTimestamp().toTimeString()}
+            </p>
             <h1 className='text-center mb-5 font-semibold text-2xl'>
               Blog Details
             </h1>
@@ -25,7 +28,7 @@ export default async function PostDetails({ params }) {
             </div>
           </>
         ) : (
-          <p className="text-center text-2xl font-medium">No Post found!</p>
+          <p className='text-center text-2xl font-medium'>No Post found!</p>
         )}
       </div>
     </div>
