@@ -6,7 +6,7 @@ const publicRoute = ["/login", "/register"];
 
 export default async function middleware(req) {
   const path = req.nextUrl.pathname;
-  console.log(path);
+  
   const isProtected =
     protectedRoute.includes(path) || path.startsWith("/posts/update/");
   const isPublic = publicRoute.includes(path);
