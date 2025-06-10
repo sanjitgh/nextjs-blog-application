@@ -1,5 +1,6 @@
 "use client";
 import { register } from "@/actions/auth";
+import LoadingSpinerIcon from "@/app/components/LoadingSpinerIcon";
 import Link from "next/link";
 import { useActionState } from "react";
 
@@ -86,21 +87,7 @@ export default function Register() {
                   ? "bg-[#a8b9ff] cursor-not-allowed"
                   : "cursor-pointer bg-[#4d6bfe]"
               } hover:bg-[#3a5bed] w-full py-2 px-4 rounded-md text-white font-medium`}>
-              {isPending ? (
-                <div className='flex justify-center items-center'>
-                  <svg
-                    className='animate-spin'
-                    xmlns='http://www.w3.org/2000/svg'
-                    height='24px'
-                    viewBox='0 -960 960 960'
-                    width='24px'
-                    fill='#ffffff'>
-                    <path d='M204-318q-22-38-33-78t-11-82q0-134 93-228t227-94h7l-64-64 56-56 160 160-160 160-56-56 64-64h-7q-100 0-170 70.5T240-478q0 26 6 51t18 49l-60 60ZM481-40 321-200l160-160 56 56-64 64h7q100 0 170-70.5T720-482q0-26-6-51t-18-49l60-60q22 38 33 78t11 82q0 134-93 228t-227 94h-7l64 64-56 56Z' />
-                  </svg>
-                </div>
-              ) : (
-                "Create Account"
-              )}
+              {isPending ? <LoadingSpinerIcon /> : "Create Account"}
             </button>
           </form>
 

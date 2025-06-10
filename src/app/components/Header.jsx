@@ -17,6 +17,7 @@ export default async function Header() {
 
           <nav className='flex items-center space-x-8'>
             <Navlink label={"Home"} href={"/"} />
+            <Navlink label={"Posts"} href={"/posts"} />
             {authUser ? (
               <>
                 <Navlink label={"Create Blog"} href={"/posts/create"} />
