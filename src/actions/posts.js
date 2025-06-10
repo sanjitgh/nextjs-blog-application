@@ -4,6 +4,7 @@ import { getCollection } from "@/lib/db";
 import getAuthUser from "@/lib/getAuthUser";
 import { BlogFormSchema } from "@/lib/rulse";
 import { ObjectId } from "mongodb";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createBlog(state, formData) {
@@ -49,7 +50,7 @@ export async function createBlog(state, formData) {
 export async function updateBlog(state, formData) {
   // Check is user is login
   const user = await getAuthUser();
-  // if (!user) return redirect("/");
+  if (!user) return redirect("/");
 
   const title = formData.get("title");
   const content = formData.get("content");
@@ -88,5 +89,24 @@ export async function updateBlog(state, formData) {
       },
     }
   );
-  redirect('/dashboard')
+  redirect("/dashboard");
+}
+
+export async function deleteBlog(formData) {
+  // Check is user is login
+  const user = await getAuthUser();
+  if (!user) return redirect("/");
+
+  // Find the post
+  const postCollection = await getCollection("posts");
+  const post = await postCollection.findOne({
+    _id: ObjectId.createFromHexString(formData.get("postId")),
+  });
+
+  // Check the auth user owns post
+  if (user.userId !== post.userId.toString()) return redirect("/");
+
+  // Delete the data
+  postCollection.findOneAndDelete({ _id: post._id });
+  revalidatePath("/dashboard");
 }

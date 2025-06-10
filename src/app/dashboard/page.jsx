@@ -1,3 +1,4 @@
+import { deleteBlog } from "@/actions/posts";
 import { getCollection } from "@/lib/db";
 import getAuthUser from "@/lib/getAuthUser";
 import { ObjectId } from "mongodb";
@@ -61,9 +62,16 @@ export default async function page() {
                     </Link>
                   </td>
                   <td className='w-1/4 px-6 py-4 text-sm text-center'>
-                    <button className='cursor-pointer text-red-600'>
-                      Delete
-                    </button>
+                    <form action={deleteBlog}>
+                      <input
+                        type='hidden'
+                        name='postId'
+                        defaultValue={post._id.toString()}
+                      />
+                      <button className='cursor-pointer text-red-600'>
+                        Delete
+                      </button>
+                    </form>
                   </td>
                 </tr>
               ))}
